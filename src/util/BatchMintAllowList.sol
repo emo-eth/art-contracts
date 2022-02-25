@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.11;
+pragma solidity ^0.8.12;
 import {Ownable} from "oz/access/Ownable.sol";
 import {MerkleVerifier} from "./MerkleVerifier.sol";
 import {IAllowList} from "./IAllowList.sol";

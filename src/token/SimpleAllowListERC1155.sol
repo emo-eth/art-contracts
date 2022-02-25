@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.11;
+pragma solidity ^0.8.12;
 
 import {ERC1155Extended} from "./ERC1155Extended.sol";
 import {AllowList} from "../util/AllowList.sol";

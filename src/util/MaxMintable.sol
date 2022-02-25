@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.11;
+pragma solidity ^0.8.12;
 import {Ownable} from "oz/access/Ownable.sol";
 
 ///@notice Ownable helper contract to keep track of how many times an address has minted
