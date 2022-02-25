@@ -76,13 +76,13 @@ contract ERC2981Test is DSTestPlusPlus {
 
     function testOnlyOwnerCanSetRoyaltyAddress() public {
         royalty.transferOwnership(address(user));
-        cheats.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert("Ownable: caller is not the owner");
         royalty.setRoyaltyAddress(address(user));
     }
 
     function testOnlyOwnerCanSetRoyaltyRate() public {
         royalty.transferOwnership(address(user));
-        cheats.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert("Ownable: caller is not the owner");
         royalty.setRoyaltyRate(1);
     }
 }

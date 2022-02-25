@@ -67,7 +67,7 @@ contract AllowListTest is DSTestPlusPlus {
 
     function testOnlyOwnerCanUpdateRoot() public {
         list.transferOwnership(address(user));
-        cheats.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert("Ownable: caller is not the owner");
         list.setMerkleRoot(bytes32(0));
     }
 
@@ -77,14 +77,14 @@ contract AllowListTest is DSTestPlusPlus {
 
     function testIsAllowListedModifierReverts() public {
         list.setMerkleRoot(0);
-        cheats.expectRevert(errorSig("NotAllowListed()"));
+        vm.expectRevert(errorSig("NotAllowListed()"));
         list.redeem(proof);
     }
 
     function testRedeemsModifier() public {
         list.redeem(proof);
         list.redeem(proof);
-        cheats.expectRevert(errorSig("MaxAllowListRedemptions()"));
+        vm.expectRevert(errorSig("MaxAllowListRedemptions()"));
         list.redeem(proof);
     }
 }

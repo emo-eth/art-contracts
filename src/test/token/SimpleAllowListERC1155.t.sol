@@ -45,7 +45,7 @@ contract SimpleAllowListERC1155Test is
     //canMint(_id)
     function testMaxMintedMintAllowList() public {
         nft.bulkMint(address(this), 0, nft.MAX_SUPPLY_PER_ID());
-        cheats.expectRevert(errorSig("MaxSupplyForID()"));
+        vm.expectRevert(errorSig("MaxSupplyForID()"));
         nft.mintAllowList{value: mintPrice}(0, proof);
     }
 
@@ -53,20 +53,20 @@ contract SimpleAllowListERC1155Test is
     function testAllowListIncrementsSupplyForId() public {
         nft.mintAllowList{value: mintPrice}(0, proof);
         uint256 MAX_SUPPLY = nft.MAX_SUPPLY_PER_ID();
-        cheats.expectRevert(errorSig("MaxSupplyForID()"));
+        vm.expectRevert(errorSig("MaxSupplyForID()"));
         nft.bulkMint(address(this), 0, MAX_SUPPLY);
     }
 
     //includesCorrectPayment
     function testIncorrectPaymentMintAllowList() public {
-        cheats.expectRevert(errorSig("IncorrectPayment()"));
+        vm.expectRevert(errorSig("IncorrectPayment()"));
         nft.mintAllowList{value: 0.11 ether}(0, proof);
     }
 
     //nonReentrant
     function testReentrantMintAllowList() public {
         reentrant = true;
-        cheats.expectRevert("REENTRANCY");
+        vm.expectRevert("REENTRANCY");
         nft.mintAllowList{value: mintPrice}(1, proof);
     }
 
@@ -75,14 +75,14 @@ contract SimpleAllowListERC1155Test is
     function testRedeemedMintAllowList() public {
         nft.mintAllowList{value: mintPrice}(1, proof);
         nft.mintAllowList{value: mintPrice}(1, proof);
-        cheats.expectRevert(errorSig("MaxAllowListRedemptions()"));
+        vm.expectRevert(errorSig("MaxAllowListRedemptions()"));
         nft.mintAllowList{value: mintPrice}(1, proof);
     }
 
     //onlyAllowListed(_proof)
     function testNotAllowListedMintAllowList() public {
         nft.setMerkleRoot(bytes32(0));
-        cheats.expectRevert(errorSig("NotAllowListed()"));
+        vm.expectRevert(errorSig("NotAllowListed()"));
 
         nft.mintAllowList{value: mintPrice}(0, proof);
     }
@@ -90,7 +90,7 @@ contract SimpleAllowListERC1155Test is
     //whenNotPaused
     function testPausedMintAllowList() public {
         nft.pause();
-        cheats.expectRevert("Pausable: paused");
+        vm.expectRevert("Pausable: paused");
         nft.mintAllowList{value: mintPrice}(0, proof);
     }
 

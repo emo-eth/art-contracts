@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.11;
 import {DSTestPlus} from "sm/test/utils/DSTestPlus.sol";
-import {CheatCodes} from "./CheatCodes.sol";
+import {stdCheats, Vm} from "std/stdlib.sol";
 
-contract DSTestPlusPlus is DSTestPlus {
-    CheatCodes internal constant cheats = CheatCodes(HEVM_ADDRESS);
+contract DSTestPlusPlus is DSTestPlus, stdCheats {
+    Vm internal constant vm = vm_std_cheats;
 
     function errorSig(string memory signature)
         public

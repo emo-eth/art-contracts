@@ -31,19 +31,19 @@ contract ERC1155MetadataTest is DSTestPlusPlus {
 
     function testOnlyOwnerCanUpdateUri() public {
         nft.transferOwnership(address(user));
-        cheats.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert("Ownable: caller is not the owner");
         nft.setUri(uri2);
     }
 
     function testCanFreezeMetadata() public {
         nft.freezeMetadata();
-        cheats.expectRevert(errorSig("MetadataIsFrozen()"));
+        vm.expectRevert(errorSig("MetadataIsFrozen()"));
         nft.setUri("revert pls");
     }
 
     function testOnlyOwnerCanFreezeUri() public {
         nft.transferOwnership(address(user));
-        cheats.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert("Ownable: caller is not the owner");
         nft.freezeMetadata();
     }
 

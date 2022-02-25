@@ -36,14 +36,14 @@ contract TimeLockTest is DSTestPlusPlus {
     function testUpdateUnlockOnlyOwner() public {
         lock.transferOwnership(address(user));
         uint256 timestamp = block.timestamp;
-        cheats.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert("Ownable: caller is not the owner");
         lock.setUnlockTime(timestamp + 100);
     }
 
     function testOnlyAfterUnlockModifier() public {
         assertTrue(lock.trueAfterUnlock());
         lock.setUnlockTime(block.timestamp + 100);
-        cheats.expectRevert(errorSig("TimeLocked()"));
+        vm.expectRevert(errorSig("TimeLocked()"));
         lock.trueAfterUnlock();
     }
 

@@ -35,7 +35,7 @@ contract MaxMintableTest is DSTestPlusPlus {
 
     function testOnlyOwnerCanSetMaxMints() public {
         list.transferOwnership(address(user));
-        cheats.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert("Ownable: caller is not the owner");
         list.setMaxMintsPerWallet(5);
     }
 
@@ -43,18 +43,18 @@ contract MaxMintableTest is DSTestPlusPlus {
         list.checkAndIncrement(1);
         list.checkAndIncrement(1);
         // works with batch too
-        cheats.prank(address(1));
+        vm.prank(address(1));
         list.checkAndIncrement(2);
     }
 
     function testRedeemingMoreThanMaxReverts() public {
         list.checkAndIncrement(1);
         list.checkAndIncrement(1);
-        cheats.expectRevert(abi.encodeWithSignature("MaxMintedForWallet()"));
+        vm.expectRevert(abi.encodeWithSignature("MaxMintedForWallet()"));
         list.checkAndIncrement(1);
-        cheats.startPrank(address(1));
-        cheats.expectRevert(abi.encodeWithSignature("MaxMintedForWallet()"));
+        vm.startPrank(address(1));
+        vm.expectRevert(abi.encodeWithSignature("MaxMintedForWallet()"));
         list.checkAndIncrement(3);
-        cheats.stopPrank();
+        vm.stopPrank();
     }
 }

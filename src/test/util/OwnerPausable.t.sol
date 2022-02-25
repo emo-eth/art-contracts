@@ -39,26 +39,26 @@ contract OwnerPausableTest is DSTestPlusPlus {
 
     function testOnlyOwnerCanPause() public {
         pausable.transferOwnership(address(user));
-        cheats.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert("Ownable: caller is not the owner");
         pausable.pause();
     }
 
     function testOnlyOwnerCanUnPause() public {
         pausable.pause();
         pausable.transferOwnership(address(user));
-        cheats.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert("Ownable: caller is not the owner");
         pausable.unpause();
     }
 
     function testModifierWhenPaused() public {
         pausable.pause();
         assertTrue(pausable.trueWhenPaused());
-        cheats.expectRevert("Pausable: paused");
+        vm.expectRevert("Pausable: paused");
         pausable.trueWhenNotPaused();
     }
 
     function testModifierWhenNotPaused() public {
-        cheats.expectRevert("Pausable: not paused");
+        vm.expectRevert("Pausable: not paused");
         pausable.trueWhenPaused();
     }
 }

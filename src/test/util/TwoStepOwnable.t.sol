@@ -21,47 +21,47 @@ contract TwoStepOwnableTest is DSTestPlusPlus {
     }
 
     function testTransferOwnershipRejectsZeroAddress() public {
-        cheats.expectRevert(errorSig("NewOwnerIsZeroAddress()"));
+        vm.expectRevert(errorSig("NewOwnerIsZeroAddress()"));
         ownable.transferOwnership(address(0));
     }
 
     function testClaimOwnership() public {
         ownable.transferOwnership(address(user));
-        cheats.prank(address(user));
+        vm.prank(address(user));
         ownable.claimOwnership();
         assertEq(ownable.owner(), address(user));
     }
 
     function testTransferOwnershipIsStillOnlyOwner() public {
         ownable.transferOwnership(address(user));
-        cheats.prank(address(user));
+        vm.prank(address(user));
         ownable.claimOwnership();
         // prank is over, back to regular address
-        cheats.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert("Ownable: caller is not the owner");
         ownable.transferOwnership(address(5));
     }
 
     function testCancelTransferOwnership() public {
         ownable.transferOwnership(address(user));
         ownable.cancelOwnershipTransfer();
-        cheats.startPrank(address(user));
-        cheats.expectRevert(errorSig("NotNextOwner()"));
+        vm.startPrank(address(user));
+        vm.expectRevert(errorSig("NotNextOwner()"));
         ownable.claimOwnership();
     }
 
     function testNotNextOwner() public {
         ownable.transferOwnership(address(user));
-        cheats.startPrank(address(5));
-        cheats.expectRevert(errorSig("NotNextOwner()"));
+        vm.startPrank(address(5));
+        vm.expectRevert(errorSig("NotNextOwner()"));
         ownable.claimOwnership();
     }
 
     function testOnlyOwnerCanCancelTransferOwnership() public {
         ownable.transferOwnership(address(user));
-        cheats.prank(address(user));
+        vm.prank(address(user));
         ownable.claimOwnership();
         // prank is over
-        cheats.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert("Ownable: caller is not the owner");
         ownable.cancelOwnershipTransfer();
     }
 }

@@ -58,10 +58,10 @@ contract CommissionWithdrawableTest is DSTestPlusPlus {
         // fine
         withdraw = new CommissionWithdrawableImpl(address(user), 1000);
         // bad
-        cheats.expectRevert(errorSig("CommissionPayoutPerMilleTooLarge()"));
+        vm.expectRevert(errorSig("CommissionPayoutPerMilleTooLarge()"));
         withdraw = new CommissionWithdrawableImpl(address(user), 1001);
         // bad
-        cheats.expectRevert(errorSig("CommissionPayoutAddressIsZeroAddress()"));
+        vm.expectRevert(errorSig("CommissionPayoutAddressIsZeroAddress()"));
         withdraw = new CommissionWithdrawableImpl(address(0), 1000);
     }
 
@@ -92,7 +92,7 @@ contract CommissionWithdrawableTest is DSTestPlusPlus {
         withdraw.transferOwnership(address(user));
 
         payable(address(withdraw)).transfer(1 ether);
-        cheats.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert("Ownable: caller is not the owner");
 
         withdraw.withdraw();
     }
@@ -103,7 +103,7 @@ contract CommissionWithdrawableTest is DSTestPlusPlus {
         uint256 amount = 50 * 10**18;
         token.mint(amount);
         token.transfer(address(withdraw), amount);
-        cheats.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert("Ownable: caller is not the owner");
 
         withdraw.withdrawToken(address(token));
     }

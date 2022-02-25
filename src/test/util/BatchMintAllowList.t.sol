@@ -77,7 +77,7 @@ contract BatchMintAllowListTest is DSTestPlusPlus {
 
     function testOnlyOwnerCanUpdateRoot() public {
         list.transferOwnership(address(user));
-        cheats.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert("Ownable: caller is not the owner");
         list.setMerkleRoot(bytes32(0));
     }
 
@@ -89,7 +89,7 @@ contract BatchMintAllowListTest is DSTestPlusPlus {
         assertTrue(list.trueIfAllowListed(proof));
 
         list.setMerkleRoot(0);
-        cheats.expectRevert(errorSig("NotAllowListed()"));
+        vm.expectRevert(errorSig("NotAllowListed()"));
         list.trueIfAllowListed(proof);
     }
 
@@ -106,7 +106,7 @@ contract BatchMintAllowListTest is DSTestPlusPlus {
     function testNotYetRedeemedModifier() public {
         list.redeem(BatchMintAllowList.MintQuantities(1, 0, 0), proof);
         list.redeem(BatchMintAllowList.MintQuantities(1, 0, 0), proof);
-        cheats.expectRevert(errorSig("MaxAllowListRedemptions()"));
+        vm.expectRevert(errorSig("MaxAllowListRedemptions()"));
 
         list.redeem(BatchMintAllowList.MintQuantities(2, 0, 0), proof);
     }

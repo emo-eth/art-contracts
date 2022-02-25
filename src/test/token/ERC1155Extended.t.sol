@@ -37,7 +37,7 @@ contract ERC1155ExtendedTest is DSTestPlusPlus, ReentrantERC1155Receiver {
         test.setMintPrice(0.11 ether);
         assertEq(0.11 ether, test.mintPrice());
         test.transferOwnership(address(user));
-        cheats.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert("Ownable: caller is not the owner");
         test.setMintPrice(0.111 ether);
     }
 
@@ -49,7 +49,7 @@ contract ERC1155ExtendedTest is DSTestPlusPlus, ReentrantERC1155Receiver {
 
     function testOnlyOwnerCanBulkMint() public {
         test.transferOwnership(address(user));
-        cheats.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert("Ownable: caller is not the owner");
         test.bulkMint(address(this), 0, 10);
     }
 
@@ -72,7 +72,7 @@ contract ERC1155ExtendedTest is DSTestPlusPlus, ReentrantERC1155Receiver {
 
     function testMintInvalidId() public {
         assertEq(0, address(test).balance);
-        cheats.expectRevert(errorSig("InvalidOptionID()"));
+        vm.expectRevert(errorSig("InvalidOptionID()"));
         test.mint{value: mintPrice}(3);
         // test invalid mint does not consume ether
         assertEq(0, address(test).balance);
@@ -81,7 +81,7 @@ contract ERC1155ExtendedTest is DSTestPlusPlus, ReentrantERC1155Receiver {
     // canMint(_id)
     function testMintMaxMintedBulk() public {
         test.bulkMint(address(this), 0, 100);
-        cheats.expectRevert(errorSig("MaxSupplyForID()"));
+        vm.expectRevert(errorSig("MaxSupplyForID()"));
         test.mint{value: mintPrice}(0);
     }
 
@@ -94,28 +94,28 @@ contract ERC1155ExtendedTest is DSTestPlusPlus, ReentrantERC1155Receiver {
 
     // includesCorrectPayment
     function testMintIncorrectPayment() public {
-        cheats.expectRevert(errorSig("IncorrectPayment()"));
+        vm.expectRevert(errorSig("IncorrectPayment()"));
         test.mint{value: 0.11 ether}(0);
     }
 
     // nonReentrant
     function testReentrant() public {
         reentrant = true;
-        cheats.expectRevert("REENTRANCY");
+        vm.expectRevert("REENTRANCY");
         test.mint{value: mintPrice}(1);
     }
 
     // onlyAfterUnlock
     function testMintBeforeUnlock() public {
         test.setUnlockTime(100);
-        cheats.expectRevert(errorSig("TimeLocked()"));
+        vm.expectRevert(errorSig("TimeLocked()"));
         test.mint{value: mintPrice}(0);
     }
 
     // whenNotPaused
     function testMintPaused() public {
         test.pause();
-        cheats.expectRevert("Pausable: paused");
+        vm.expectRevert("Pausable: paused");
         test.mint{value: mintPrice}(0);
     }
 
@@ -135,7 +135,7 @@ contract ERC1155ExtendedTest is DSTestPlusPlus, ReentrantERC1155Receiver {
 
         test.mint{value: mintPrice}(0);
         test.mint{value: mintPrice}(0);
-        cheats.expectRevert(abi.encodeWithSignature("MaxMintedForWallet()"));
+        vm.expectRevert(abi.encodeWithSignature("MaxMintedForWallet()"));
         test.mint{value: mintPrice}(0);
     }
 }

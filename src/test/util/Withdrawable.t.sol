@@ -52,7 +52,7 @@ contract WithdrawableTest is DSTestPlusPlus {
         withdraw.transferOwnership(address(user));
 
         payable(address(withdraw)).transfer(1 ether);
-        cheats.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert("Ownable: caller is not the owner");
 
         withdraw.withdraw();
     }
@@ -63,7 +63,7 @@ contract WithdrawableTest is DSTestPlusPlus {
         uint256 amount = 50 * 10**18;
         token.mint(amount);
         token.transfer(address(withdraw), amount);
-        cheats.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert("Ownable: caller is not the owner");
 
         withdraw.withdrawToken(address(token));
     }

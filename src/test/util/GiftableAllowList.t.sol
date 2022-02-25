@@ -74,7 +74,7 @@ contract GiftableAllowListTest is DSTestPlusPlus {
 
     function testOnlyOwnerCanUpdateRoot() public {
         list.transferOwnership(address(user));
-        cheats.expectRevert("Ownable: caller is not the owner");
+        vm.expectRevert("Ownable: caller is not the owner");
 
         list.setGiftMerkleRoot(bytes32(0));
     }
@@ -86,7 +86,7 @@ contract GiftableAllowListTest is DSTestPlusPlus {
     function testIsGiftAllowListedModifier() public {
         assertTrue(list.trueIfGiftAllowListed(proof));
         list.setGiftMerkleRoot(0);
-        cheats.expectRevert(errorSig("NotGiftAllowListed()"));
+        vm.expectRevert(errorSig("NotGiftAllowListed()"));
         list.trueIfGiftAllowListed(proof);
     }
 
