@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.12;
+pragma solidity >=0.8.4;
 import {Ownable} from "oz/access/Ownable.sol";
 import {ProxyRegistry} from "./ProxyRegistry.sol";
 import {IAllowsProxy} from "./IAllowsProxy.sol";

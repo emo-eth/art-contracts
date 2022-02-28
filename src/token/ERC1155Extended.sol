@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.12;
+pragma solidity >=0.8.4;
 
 import {ERC1155Metadata} from "../token/ERC1155Metadata.sol";
 import {AllowsImmutableProxy} from "../util/AllowsImmutableProxy.sol";
