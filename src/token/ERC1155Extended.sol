@@ -2,7 +2,7 @@
 pragma solidity >=0.8.4;
 
 import {ERC1155Metadata} from "../token/ERC1155Metadata.sol";
-import {AllowsImmutableProxy} from "../util/AllowsImmutableProxy.sol";
+import {AllowsProxyFromImmutableRegistry} from "../util/AllowsProxyFromImmutableRegistry.sol";
 import {MaxMintable} from "../util/MaxMintable.sol";
 import {OwnerPausable} from "../util/OwnerPausable.sol";
 import {ReentrancyGuard} from "sm/utils/ReentrancyGuard.sol";
@@ -12,7 +12,7 @@ import {TimeLock} from "../util/TimeLock.sol";
 ///@author emo.eth
 abstract contract ERC1155Extended is
     ERC1155Metadata,
-    AllowsImmutableProxy,
+    AllowsProxyFromImmutableRegistry,
     MaxMintable,
     OwnerPausable,
     ReentrancyGuard,
@@ -41,7 +41,7 @@ abstract contract ERC1155Extended is
         ERC1155Metadata(_name, _symbol, _uri)
         TimeLock(_unlockTime)
         MaxMintable(_maxMintsPerWallet)
-        AllowsImmutableProxy(_proxyAddress, true)
+        AllowsProxyFromImmutableRegistry(_proxyAddress, true)
     {
         name = _name;
         symbol = _symbol;
@@ -122,7 +122,7 @@ abstract contract ERC1155Extended is
         returns (bool)
     {
         return
-            isApprovedForProxy(_owner, _operator) ||
+            isProxyOfOwner(_owner, _operator) ||
             super.isApprovedForAll(_owner, _operator);
     }
 

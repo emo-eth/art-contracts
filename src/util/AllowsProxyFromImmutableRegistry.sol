@@ -2,10 +2,10 @@
 pragma solidity >=0.8.4;
 import {Ownable} from "oz/access/Ownable.sol";
 import {ProxyRegistry} from "./ProxyRegistry.sol";
-import {IAllowsProxy} from "./IAllowsProxy.sol";
+import {IAllowsProxyFromRegistry} from "./IAllowsProxyFromRegistry.sol";
 
 ///@notice Checks approval against a single proxy address configured at deploy for gas-free trading on a marketplace
-contract AllowsImmutableProxy is IAllowsProxy, Ownable {
+contract AllowsProxyFromImmutableRegistry is IAllowsProxyFromRegistry, Ownable {
     address internal immutable proxyAddress_;
     bool internal isProxyActive_;
 
@@ -31,7 +31,7 @@ contract AllowsImmutableProxy is IAllowsProxy, Ownable {
     ///@param _owner address of token owner
     ///@param _operator address of operator
     ///@return bool true if operator is approved
-    function isApprovedForProxy(address _owner, address _operator)
+    function isProxyOfOwner(address _owner, address _operator)
         public
         view
         returns (bool)

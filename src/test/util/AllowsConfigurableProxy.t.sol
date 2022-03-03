@@ -3,26 +3,27 @@ pragma solidity ^0.8.11;
 
 import "sm/test/utils/DSTestPlus.sol";
 
-import {AllowsConfigurableProxy} from "../../util/AllowsConfigurableProxy.sol";
+import {AllowsProxyFromConfigurableRegistry} from "../../util/AllowsProxyFromConfigurableRegistry.sol";
 import {ProxyRegistry, OwnableDelegateProxy} from "../../util/ProxyRegistry.sol";
 import {User} from "../helpers/User.sol";
 
 contract TestProxyRegistry is ProxyRegistry {
-    function setProxyApprovalForAll(address _owner, address _operator)
-        external
-    {
-        proxies[_owner] = OwnableDelegateProxy(_operator);
+    function registerProxy(address _owner, address _proxy) external {
+        proxies[_owner] = OwnableDelegateProxy(_proxy);
     }
 }
 
-contract AllowsConfigurableProxyTest is DSTestPlus {
-    AllowsConfigurableProxy test;
+contract AllowsProxyFromConfigurableRegistryTest is DSTestPlus {
+    AllowsProxyFromConfigurableRegistry test;
     TestProxyRegistry proxyRegistry;
     User user = new User();
 
     function setUp() public {
         proxyRegistry = new TestProxyRegistry();
-        test = new AllowsConfigurableProxy(address(proxyRegistry), true);
+        test = new AllowsProxyFromConfigurableRegistry(
+            address(proxyRegistry),
+            true
+        );
     }
 
     function testConstructorInitializesProperties() public {
@@ -53,12 +54,12 @@ contract AllowsConfigurableProxyTest is DSTestPlus {
         test.setProxyAddress(address(user));
     }
 
-    function testIsApprovedForProxy() public {
-        assertFalse(test.isApprovedForProxy(address(user), address(this)));
-        proxyRegistry.setProxyApprovalForAll(address(user), address(this));
-        assertTrue(test.isApprovedForProxy(address(user), address(this)));
+    function testIsProxyOfOwner() public {
+        assertFalse(test.isProxyOfOwner(address(user), address(this)));
+        proxyRegistry.registerProxy(address(user), address(this));
+        assertTrue(test.isProxyOfOwner(address(user), address(this)));
         // test returns false when proxy is inactive
         test.setIsProxyActive(false);
-        assertFalse(test.isApprovedForProxy(address(user), address(this)));
+        assertFalse(test.isProxyOfOwner(address(user), address(this)));
     }
 }

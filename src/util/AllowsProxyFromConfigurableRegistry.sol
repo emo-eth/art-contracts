@@ -2,9 +2,12 @@
 pragma solidity >=0.8.4;
 import {Ownable} from "oz/access/Ownable.sol";
 import {ProxyRegistry} from "./ProxyRegistry.sol";
-import {IAllowsProxy} from "./IAllowsProxy.sol";
+import {IAllowsProxyFromRegistry} from "./IAllowsProxyFromRegistry.sol";
 
-contract AllowsConfigurableProxy is IAllowsProxy, Ownable {
+contract AllowsProxyFromConfigurableRegistry is
+    IAllowsProxyFromRegistry,
+    Ownable
+{
     bool internal isProxyActive_;
     address internal proxyAddress_;
 
@@ -29,7 +32,7 @@ contract AllowsConfigurableProxy is IAllowsProxy, Ownable {
         return isProxyActive_;
     }
 
-    function isApprovedForProxy(address _owner, address _operator)
+    function isProxyOfOwner(address _owner, address _operator)
         public
         view
         returns (bool)
