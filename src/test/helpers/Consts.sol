@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.11;
+pragma solidity >=0.8.4;
 
 contract Consts {
     uint256 public immutable DEFAULT_REDEMPTIONS = 2;

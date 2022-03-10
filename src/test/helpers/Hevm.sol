@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.11;
+pragma solidity >=0.8.4;
 
 // Copied from https://github.com/gakonst/foundry/blob/46e36e8aacabaf2002564d2108035557e107641b/evm-adapters/testdata/CheatCodes.sol
 interface Hevm {

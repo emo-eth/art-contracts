@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.11;
+pragma solidity >=0.8.4;
 
 import {DSTestPlusPlus} from "../helpers/DSTestPlusPlus.sol";
 import {SimpleAllowListERC1155} from "../../token/SimpleAllowListERC1155.sol";

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.11;
+pragma solidity >=0.8.4;
 
 import {DSTestPlusPlus} from "../helpers/DSTestPlusPlus.sol";
 
@@ -115,12 +115,7 @@ contract CommissionWithdrawableTest is DSTestPlusPlus {
         token.transfer(address(withdraw), token.balanceOf(address(this)));
         withdraw.withdrawToken(address(token));
         uint256 userBalance = (bigBalance / 1000) * 50;
-        emit log_named_uint("expected user", userBalance);
-        uint256 actualUser = token.balanceOf(address(user));
-        emit log_named_uint("actual user", actualUser);
         assertEq(userBalance, token.balanceOf(address(user)));
-        emit log_named_uint("expected test", bigBalance - userBalance);
-        emit log_named_uint("actual test", token.balanceOf(address(this)));
         assertEq(bigBalance - userBalance, token.balanceOf(address(this)));
     }
 

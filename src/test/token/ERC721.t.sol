@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.11;
+pragma solidity >=0.8.4;
 
 import {DSTestPlusPlus} from "../helpers/DSTestPlusPlus.sol";
 import {ERC721} from "oz/token/ERC721/ERC721.sol";

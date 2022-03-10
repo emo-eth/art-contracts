@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.11;
+pragma solidity >=0.8.4;
 import {ERC1155Extended} from "../../token/ERC1155Extended.sol";
 
 contract ERC1155ExtendedImpl is ERC1155Extended {

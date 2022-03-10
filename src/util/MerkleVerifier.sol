@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 ///@notice Forked from OpenZeppelin Contracts v4.4.1 (utils/cryptography/MerkleProof.sol)
 
-pragma solidity ^0.8.11;
+pragma solidity >=0.8.4;
 
 /**
  * @dev These functions deal with verification of Merkle Trees proofs.
