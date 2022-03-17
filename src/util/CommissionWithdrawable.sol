@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.4;
 import {Ownable} from "oz/access/Ownable.sol";
-import {IERC20} from "oz/interfaces/IERC20.sol";
 import {IWithdrawable} from "./IWithdrawable.sol";
+
+import {SafeTransferLib} from "sm/utils/SafeTransferLib.sol";
+import {ERC20} from "sm/tokens/ERC20.sol";
 
 ///@notice Ownable helper contract to withdraw ether or tokens from the contract address balance
 contract CommissionWithdrawable is IWithdrawable, Ownable {
@@ -37,20 +39,29 @@ contract CommissionWithdrawable is IWithdrawable, Ownable {
             uint256 ownerShareMinusCommission,
             uint256 commissionFee
         ) = calculateOwnerShareAndCommissionFee(balance);
-        payable(msg.sender).transfer(ownerShareMinusCommission);
-        payable(commissionPayoutAddress).transfer(commissionFee);
+        SafeTransferLib.safeTransferETH(msg.sender, ownerShareMinusCommission);
+        SafeTransferLib.safeTransferETH(commissionPayoutAddress, commissionFee);
     }
 
     ///@notice Withdraw tokens from contract address. OnlyOwner.
     ///@param _token ERC20 smart contract address
     function withdrawToken(address _token) external override onlyOwner {
-        uint256 balance = IERC20(_token).balanceOf(address(this));
+        ERC20 token = ERC20(_token);
+        uint256 balance = token.balanceOf(address(this));
         (
             uint256 ownerShareMinusCommission,
             uint256 commissionFee
         ) = calculateOwnerShareAndCommissionFee(balance);
-        IERC20(_token).transfer(msg.sender, ownerShareMinusCommission);
-        IERC20(_token).transfer(commissionPayoutAddress, commissionFee);
+        SafeTransferLib.safeTransfer(
+            token,
+            msg.sender,
+            ownerShareMinusCommission
+        );
+        SafeTransferLib.safeTransfer(
+            token,
+            commissionPayoutAddress,
+            commissionFee
+        );
     }
 
     function calculateOwnerShareAndCommissionFee(uint256 _balance)
