@@ -4,7 +4,7 @@ import {DSTestPlus} from "sm/test/utils/DSTestPlus.sol";
 import {stdCheats, Vm} from "std/stdlib.sol";
 
 contract DSTestPlusPlus is DSTestPlus, stdCheats {
-    Vm internal constant vm = vm_std_cheats;
+    Vm public constant vm = Vm(HEVM_ADDRESS);
 
     function errorSig(string memory signature)
         public
